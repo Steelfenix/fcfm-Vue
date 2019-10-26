@@ -1,6 +1,13 @@
 <template>
-  <div class="bg-white rounded-lg shadow overflow-hidden max-w-sm m-w-full">
-    <img :src="imageData.url" />
+  <div
+    class="mt-4 bg-white rounded-lg shadow-lg overflow-hidden"
+    style="width:350px;"
+  >
+    <!-- <div
+      class="h-64 bg-cover bg-center"
+      :style="{ backgroundImage: `url('${imageData.urls.full}')` }"
+    /> -->
+    <img class="h-64 w-full object-cover" :src="imageData.urls.regular" />
     <div class="px-8 py-4">
       <div class="flex justify-between items-center">
         <div>
@@ -9,8 +16,9 @@
           <div class="text-sm font-bold mt-1">{{ imageData.user.name }}</div>
         </div>
         <img
-          class="rounded-full h-16"
-          :src="imageData.user.profilePictureUrl"
+          @click="onClickUserImage"
+          class="rounded-full h-16 cursor-pointer"
+          :src="imageData.user.profile_image.medium"
         />
       </div>
       <div class="flex mt-8 flex-col">
@@ -28,23 +36,7 @@
           </svg>
           <p class="ml-1">Downloads</p>
         </div>
-        <span class="mt-1 text-lg font-light">{{ imageData.downloads }}</span>
-      </div>
-      <div class="flex mt-3 items-center">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 24 24"
-          width="24"
-          height="24"
-          class="h-8 w-8"
-        >
-          <path
-            d="M20 7a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V9c0-1.1.9-2 2-2h2.38l1.73-3.45A1 1 0 0 1 9 3h6a1 1 0 0 1 .9.55L17.61 7H20zM9.62 5L7.89 8.45A1 1 0 0 1 7 9H4v10h16V9h-3a1 1 0 0 1-.9-.55L14.39 5H9.62zM12 17a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm0-2a2 2 0 1 0 0-4 2 2 0 0 0 0 4z"
-          />
-        </svg>
-        <p class="ml-1 font-light text-base">
-          {{ imageData.camara }}
-        </p>
+        <span class="mt-1 text-3xl font-light">{{ imageData.likes }}</span>
       </div>
     </div>
   </div>
@@ -58,13 +50,31 @@ export default {
       type: Object,
       default: function() {
         return {
-          publishedDate: new Date(),
-          url: '',
-          downloads: 0,
+          alt_description: '',
+          created_at: '',
+          description: '',
+          id: '',
+          likes: 0,
           camara: '',
+          updated_at: new Date().toString(),
+          urls: {
+            raw: '',
+            full: '',
+            regular: '',
+            small: '',
+            thumb: ''
+          },
           user: {
+            id: '',
+            updated_at: new Date().toString(),
+            username: '',
             name: '',
-            profilePictureUrl: ''
+            first_name: '',
+            profile_image: {
+              large: '',
+              medium: '',
+              small: ''
+            }
           }
         };
       }
@@ -74,6 +84,11 @@ export default {
     return {
       date: new Date()
     };
+  },
+  methods: {
+    onClickUserImage() {
+      this.$router.push({ path: `/user/${this.imageData.user.username}` });
+    }
   },
   computed: {
     formatedDate() {
@@ -93,11 +108,11 @@ export default {
       ];
 
       return (
-        this.date.getDate() +
+        new Date(this.imageData.created_at).getDate() +
         ' ' +
-        monthNames[this.date.getMonth()] +
+        monthNames[new Date(this.imageData.created_at).getMonth()] +
         ' ' +
-        this.date.getFullYear()
+        new Date(this.imageData.created_at).getFullYear()
       );
     }
   },
@@ -106,4 +121,3 @@ export default {
   }
 };
 </script>
-<style></style>

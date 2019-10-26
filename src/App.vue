@@ -1,8 +1,16 @@
 <template>
   <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
+    <div class="h-16 bg-white shadow-lg flex items-center px-4">
+      <svg viewBox="0 0 32 32" width="32" height="32">
+        <path d="M10 9V0h12v9H10zm12 5h10v18H0V14h10v9h12v-9z"></path>
+      </svg>
+      <router-link
+        class="ml-4 p-4 text-gray-800"
+        v-if="$route.path !== '/'"
+        to="/"
+      >
+        Home
+      </router-link>
     </div>
     <router-view />
   </div>

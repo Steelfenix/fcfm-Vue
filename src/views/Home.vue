@@ -1,12 +1,14 @@
 <template>
-  <div class="justify-center p-8">
-    <ImageCard :image-data="imageData"></ImageCard>
+  <div class="flex flex-row p-8 w-full overflow-x-auto -mx-4">
+    <div class="pl-4" v-for="image in images" :key="image.id">
+      <ImageCard :image-data="image"></ImageCard>
+    </div>
   </div>
 </template>
 
 <script>
 import ImageCard from '../components/ImageCard';
-
+import { getData } from '../index';
 export default {
   name: 'home',
   components: {
@@ -14,28 +16,18 @@ export default {
   },
   data() {
     return {
-      imageData: {
-        publishedDate: new Date(),
-        url:
-          'https://images.unsplash.com/photo-1556742393-d75f468bfcb0?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1950&q=80',
-        downloads: 16817,
-        camara: 'Canon EOS 5D Mark IV',
-        user: {
-          name: 'Adrián Castillo',
-          profilePictureUrl:
-            'https://images.unsplash.com/profile-1495427732560-fe5248ad6638?dpr=2&auto=format&fit=crop&w=150&h=150&q=60&crop=faces&bg=fff'
-        }
-      }
+      images: []
     };
+  },
+  mounted() {
+    this.images = getData();
+    // this.$http
+    //   .get(
+    //     'https://api.unsplash.com/photos/?client_id='
+    //   )
+    //   .then(response => {
+    //     this.images = response.data;
+    //   });
   }
-  // mounted() {
-  //   this.$http
-  //     .get(
-  //       'https://api.unsplash.com/photos/?client_id=d9141a5df23f08e091fe5bde7245402a5af97fc843df78727755d6ccd3344e22'
-  //     )
-  //     .then(response => {
-  //       console.log(response);
-  //     });
-  // }
 };
 </script>
